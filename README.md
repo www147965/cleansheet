@@ -1,5 +1,7 @@
 # CleanSheet 中文表格清洗器
 
+[![测试](https://github.com/www147965/cleansheet/actions/workflows/test.yml/badge.svg)](https://github.com/www147965/cleansheet/actions/workflows/test.yml)
+
 拖进一份乱糟糟的 Excel，勾上要清洗的项，导出一份干净表格。全程本地处理，不上传任何数据。
 
 专治中文表格里那些肉眼难发现、手动改又改到崩溃的小毛病：全角数字、合并单元格、格式混乱的日期、带人民币符号的金额、重复行，还能顺手校验手机号和身份证号格式。
