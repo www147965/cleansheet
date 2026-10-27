@@ -66,13 +66,31 @@ else:
                 pass
 
     st.subheader("选择清洗规则")
+
+    # 空值处理策略单独做成单选，避免用户多选
+    EMPTY_RULES = ["drop_empty", "fill_mean", "fill_text"]
+    empty_labels = {
+        "drop_empty": "删除全空行",
+        "fill_mean": "数值列用均值填充",
+        "fill_text": "文本列填“未知”",
+    }
+    core_options = [k for k in RULES.keys() if k not in EMPTY_RULES]
+
     selected = st.multiselect(
-        "规则",
-        options=list(RULES.keys()),
-        default=DEFAULT_RULES,
+        "清洗规则",
+        options=core_options,
+        default=[k for k in DEFAULT_RULES if k in core_options],
         format_func=format_rule,
     )
-    st.caption("提示：删除全空行、数值均值填充、文本填未知 这三条是同一类空值处理策略，按需选其中一个即可，不选就保持原样。")
+
+    empty_choice = st.radio(
+        "空值怎么处理",
+        options=["不处理", "drop_empty", "fill_mean", "fill_text"],
+        format_func=lambda x: "保持原样" if x == "不处理" else empty_labels[x],
+        horizontal=True,
+    )
+    if empty_choice != "不处理":
+        selected.append(empty_choice)
 
     if st.button("开始清洗", type="primary"):
         st.subheader("清洗前")
