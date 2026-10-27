@@ -18,9 +18,16 @@ RULES = {
     "dedup": rules.drop_duplicate_rows,
     "phone_check": rules.check_phone,
     "id_check": rules.check_idcard,
+    # 下面三条空值处理默认不开启，因为填什么是业务决策，让用户自己选
+    "drop_empty": rules.drop_empty_rows,
+    "fill_mean": rules.fill_numeric_mean,
+    "fill_text": rules.fill_text_unknown,
 }
 
-DEFAULT_RULES = list(RULES.keys())
+DEFAULT_RULES = [
+    "fullwidth", "spaces", "unmerge", "dates", "numbers", "dedup",
+    "phone_check", "id_check",
+]
 
 
 @dataclass

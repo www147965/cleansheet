@@ -25,6 +25,9 @@ RULE_LABELS = {
     "dedup": "整行去重",
     "phone_check": "手机号校验",
     "id_check": "身份证校验",
+    "drop_empty": "删除全空行",
+    "fill_mean": "数值列均值填空",
+    "fill_text": "文本列填未知",
 }
 
 

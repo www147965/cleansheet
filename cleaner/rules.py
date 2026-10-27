@@ -340,3 +340,54 @@ def check_idcard(df: pd.DataFrame, report: CleanReport) -> pd.DataFrame:
                     "column": str(col), "raw": v, "reason": reason, "row": idx,
                 })
     return out
+
+
+# ---------------------------------------------------------------------------
+# 规则 9：删除整行全空的行
+# ---------------------------------------------------------------------------
+def drop_empty_rows(df: pd.DataFrame, report: CleanReport) -> pd.DataFrame:
+    """所有列都为空的行直接删掉。"""
+    before = len(df)
+    out = df.dropna(how="all").reset_index(drop=True)
+    removed = before - len(out)
+    report.add("删除空行", "(全行)", removed)
+    return out
+
+
+# ---------------------------------------------------------------------------
+# 规则 10：数值列空值用该列均值填充
+# ---------------------------------------------------------------------------
+def fill_numeric_mean(df: pd.DataFrame, report: CleanReport) -> pd.DataFrame:
+    """数值列里的空值，用该列平均值填充。全空的列不动。"""
+    out = df.copy()
+    for col in out.columns:
+        if not pd.api.types.is_numeric_dtype(out[col]):
+            continue
+        old = out[col]
+        nan_count = int(old.isna().sum())
+        if nan_count == 0:
+            continue
+        mean_val = old.mean()
+        new = old.fillna(mean_val)
+        report.add("数值均值填充", str(col), nan_count)
+        out[col] = new
+    return out
+
+
+# ---------------------------------------------------------------------------
+# 规则 11：文本列空值填"未知"
+# ---------------------------------------------------------------------------
+def fill_text_unknown(df: pd.DataFrame, report: CleanReport) -> pd.DataFrame:
+    """文本列里的空值，统一填成"未知"。数值列不处理。"""
+    out = df.copy()
+    for col in out.columns:
+        if not _is_text_column(out[col]):
+            continue
+        old = out[col]
+        nan_count = int(old.isna().sum())
+        if nan_count == 0:
+            continue
+        new = old.fillna("未知")
+        report.add("文本填空值", str(col), nan_count)
+        out[col] = new
+    return out

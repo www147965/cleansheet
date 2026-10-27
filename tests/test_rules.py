@@ -116,3 +116,25 @@ def test_pipeline_phone_and_id_check():
     assert result.df["身份证号"].tolist() == ["110101199003077758", "110101199003077759"]
     # as_dict 里能导出 invalid_values
     assert "invalid_values" in result.report.as_dict()
+
+
+def test_drop_empty_rows():
+    df = pd.DataFrame({"姓名": ["张三", None, "李四"], "月薪": [100, None, 200]})
+    rep = CleanReport()
+    out = rules.drop_empty_rows(df, rep)
+    assert len(out) == 2  # 中间那行全空被删了
+    assert out["姓名"].tolist() == ["张三", "李四"]
+
+
+def test_fill_numeric_mean():
+    df = pd.DataFrame({"月薪": [100, None, 300]})
+    rep = CleanReport()
+    out = rules.fill_numeric_mean(df, rep)
+    assert out["月薪"].tolist() == [100, 200, 300]  # 均值 200
+
+
+def test_fill_text_unknown():
+    df = pd.DataFrame({"姓名": ["张三", None, "李四"]})
+    rep = CleanReport()
+    out = rules.fill_text_unknown(df, rep)
+    assert out["姓名"].tolist() == ["张三", "未知", "李四"]
