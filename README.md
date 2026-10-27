@@ -8,6 +8,8 @@
 
 ![清洗前后对比](docs/screenshot2.png)
 
+![清洗报告与校验结果](docs/screenshot3.png)
+
 ## 快速开始
 
 ```bash
