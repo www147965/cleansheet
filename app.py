@@ -72,6 +72,7 @@ else:
         default=DEFAULT_RULES,
         format_func=format_rule,
     )
+    st.caption("提示：删除全空行、数值均值填充、文本填未知 这三条是同一类空值处理策略，按需选其中一个即可，不选就保持原样。")
 
     if st.button("开始清洗", type="primary"):
         st.subheader("清洗前")
