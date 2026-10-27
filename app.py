@@ -130,3 +130,11 @@ else:
             file_name="cleaned.xlsx",
             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         )
+
+        report_text = result.report.summary()
+        st.download_button(
+            label="下载清洗报告 (txt)",
+            data=report_text.encode("utf-8"),
+            file_name="clean_report.txt",
+            mime="text/plain",
+        )
