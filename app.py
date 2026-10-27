@@ -79,7 +79,7 @@ else:
     selected = st.multiselect(
         "清洗规则",
         options=core_options,
-        default=[k for k in DEFAULT_RULES if k in core_options],
+        default=[],
         format_func=format_rule,
     )
 
@@ -92,7 +92,9 @@ else:
     if empty_choice != "不处理":
         selected.append(empty_choice)
 
-    if st.button("开始清洗", type="primary"):
+    if not selected:
+        st.warning("请先在上面勾选至少一条清洗规则，或选择一种空值处理方式。")
+    elif st.button("开始清洗", type="primary"):
         st.subheader("清洗前")
         st.dataframe(raw_df, use_container_width=True)
 
